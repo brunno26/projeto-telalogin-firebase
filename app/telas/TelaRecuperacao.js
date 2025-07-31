@@ -74,3 +74,4 @@ const styles = {
     marginTop: 15,
   },
 };
+
