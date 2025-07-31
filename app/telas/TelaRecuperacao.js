@@ -1,25 +1,26 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Botao from '../components/Botao';
 import Input from '../components/Input';
 import { useState } from 'react';
 import { auth } from '../../firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 
-export default function TelaLogin() {
+
+export default function TelaRecuperacao() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
   const navigation = useNavigation(); 
 
-  async function efetuarLogin() {
+  async function recuperarSenha() {
     try {
-      await signInWithEmailAndPassword(auth, email, senha);
-      alert("Login efetuado com sucesso no Firebase");
-      navigation.navigate('TelaPrincipal');
+     await sendPasswordResetEmail(auth, email);
+     Alert.alert("Atenção", "A senha foi enviada para seu e-mail");
+     setEmail("");
+     navigation.navigate("TelaLogin");
+
     } catch (error) {
-      alert(error);
-      console.log(error)
+      Alert.alert("Atenção", "E-mail não encontrado")
     }
   }
 
@@ -31,21 +32,12 @@ export default function TelaLogin() {
         resizeMode="contain"
       />
       <Text style={styles.nomeSistema}>Chama Serviço</Text>
-      <Text style={styles.titulo}>Login</Text>
+      <Text style={styles.titulo}>Recupere sua senha</Text>
       <Input placeholder="Email" value={email} onChangeText={setEmail} />
-      <Input placeholder="Senha" secureTextEntry value={senha} onChangeText={setSenha} />
+
       <Botao 
-        titulo="Entrar" 
-        onPress={efetuarLogin} 
+        titulo="Recuperar Senha" onPress={recuperarSenha} 
       />
-      <TouchableOpacity onPress={() => navigation.navigate('TelaRegistro')}>
-        <Text style={styles.link}>Não tem conta? Cadastre-se</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate('TelaRecuperacao')}>
-        <Text style={styles.link}>Esqueci minha senha</Text>
-      </TouchableOpacity>
-
     </View>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View } from 'react-native';
 
-export default function Input({ placeholder, secureTextEntry }) {
+export default function Input({ placeholder, secureTextEntry, value, onChangeText }) {
   return (
     <View style={{ marginBottom: 15 }}>
       <TextInput
@@ -14,6 +14,8 @@ export default function Input({ placeholder, secureTextEntry }) {
           padding: 12,
           backgroundColor: '#fff',
         }}
+        value={value}
+        onChangeText={onChangeText}
       />
     </View>
   );
